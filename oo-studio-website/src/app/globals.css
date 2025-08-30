@@ -279,3 +279,111 @@
 .rotate-x-0 {
   transform: rotateX(0deg);
 }
+
+/* 背景の透けを完全に防ぐ */
+html, body {
+  background-color: #000000 !important;
+  background: #000000 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Next.js の全ての要素の背景を確実に設定 */
+body > div:first-child,
+#__next,
+[data-nextjs-scroll-focus-boundary] {
+  background-color: #000000 !important;
+  min-height: 100vh !important;
+}
+
+/* すべての要素に黒背景を強制適用 */
+* {
+  box-sizing: border-box;
+}
+
+/* 最強の背景オーバーレイ */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 200vh;
+  background: #000000;
+  z-index: -1;
+  pointer-events: none;
+}
+
+body::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000000;
+  z-index: -2;
+  pointer-events: none;
+}
+
+/* Canvas要素の背景も制御 */
+canvas {
+  background: transparent !important;
+}
+
+/* Three.js コンテナの背景制御 */
+div[style*="position: absolute"][style*="top: 0px"][style*="left: 0px"] {
+  background: transparent !important;
+}
+
+/* リング重なり時の文字効果 */
+@keyframes text-distortion {
+  0% {
+    filter: blur(0px);
+    text-shadow: 0 0 0 transparent;
+    transform: scale(1);
+  }
+  50% {
+    filter: blur(0.5px);
+    text-shadow: 0 0 20px rgba(96, 165, 250, 0.6);
+    transform: scale(1.02);
+  }
+  100% {
+    filter: blur(0px);
+    text-shadow: 0 0 0 transparent;
+    transform: scale(1);
+  }
+}
+
+@keyframes glass-shimmer {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+}
+
+.hero-text {
+  animation: text-distortion 4s ease-in-out infinite;
+}
+
+.glass-effect {
+  position: relative;
+}
+
+.glass-effect::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.1), 
+    transparent
+  );
+  animation: glass-shimmer 3s ease-in-out infinite;
+}

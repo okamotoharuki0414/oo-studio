@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import GlassRings from '../components/GlassRings';
+import CSS3DRings from '../components/CSS3DRings';
 
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
@@ -11,14 +12,15 @@ export default function Home() {
   const [textAnimationStarted, setTextAnimationStarted] = useState(false);
   const [showNavbar, setShowNavbar] = useState(false);
   const [hasScrolledToWhite, setHasScrolledToWhite] = useState(false);
+  const [showHeroRings, setShowHeroRings] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       setScrollY(currentScrollY);
       // さらに早い段階で白に切り替え
-      const heroHeight = window.innerHeight * 0.5; // ヒーローセクションの50%時点
-      const shouldBeDark = currentScrollY < heroHeight;
+      const darkModeHeight = window.innerHeight * 0.5; // ヒーローセクションの50%時点
+      const shouldBeDark = currentScrollY < darkModeHeight;
       
       // 一度白になったら戻らない
       if (!shouldBeDark && isDark) {
@@ -31,6 +33,11 @@ export default function Home() {
       if (currentScrollY >= 50) {
         setShowNavbar(true);
       }
+      
+      // ヒーロー画面の判定 - ヒーロー画面のみ（非常に厳格）
+      const heroSectionHeight = window.innerHeight * 0.5; // ヒーロー画面の50%まで
+      const isHeroVisible = currentScrollY < heroSectionHeight;
+      setShowHeroRings(isHeroVisible);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -54,14 +61,17 @@ export default function Home() {
   }, []);
 
   return (
-    <>
-      {/* 3D Glass Rings */}
-      <GlassRings />
+    <div style={{backgroundColor: '#000000', minHeight: '100vh', position: 'relative'}}>
+      {/* 3D Glass Rings - 立体的な丸いリング */}
+      <CSS3DRings isVisible={showHeroRings} />
+      {/* Backup: React Three Fiber rings */}
+      {/* {showHeroRings && <GlassRings isVisible={showHeroRings} />} */}
       
       {/* Loading overlay */}
-      <div className={`fixed inset-0 bg-black flex items-center justify-center z-50 overflow-hidden transition-all duration-2000 ease-out ${
-        animationPhase >= 2 ? 'opacity-0 backdrop-blur-xl' : 'opacity-100 backdrop-blur-none'
-      } ${showLoading ? 'pointer-events-auto' : 'pointer-events-none'}`}>
+      <div className={`fixed inset-0 flex items-center justify-center z-50 overflow-hidden transition-all duration-2000 ease-out ${
+        animationPhase >= 2 ? 'opacity-0' : 'opacity-100'
+      } ${showLoading ? 'pointer-events-auto' : 'pointer-events-none'}`}
+           style={{backgroundColor: '#000000'}}>
         <div className="flex items-center gap-6 text-6xl sm:text-8xl font-bold perspective-1000">
           <div 
             className={`relative transition-all ease-in-out bg-gradient-to-r from-cyan-400 via-blue-600 to-green-400 bg-clip-text text-transparent ${
@@ -101,7 +111,7 @@ export default function Home() {
         showNavbar ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
       } ${
         isDark 
-          ? 'bg-white/2 border-white/10 shadow-black/50' 
+          ? 'bg-white/5 border-white/10 shadow-black/50' 
           : 'bg-white/15 border-white/20 shadow-black/10'
       }`}>
           <div className="px-8 py-4">
@@ -147,34 +157,22 @@ export default function Home() {
       
       {/* Main website content */}
       <div 
-        className={`min-h-screen transition-all duration-[1200ms] ease-in-out ${
-          isDark ? 'bg-black' : 'bg-white'
-        } ${!showLoading ? 'opacity-100 scale-100 blur-0' : 'opacity-80 scale-102 blur-[1px]'}`}
+        className="min-h-screen transition-all duration-[1200ms] ease-in-out"
+        style={{ 
+          backgroundColor: '#000000', 
+          opacity: !showLoading ? 1 : 0.8,
+          transform: !showLoading ? 'scale(1)' : 'scale(1.02)',
+          filter: !showLoading ? 'blur(0px)' : 'blur(1px)'
+        }}
       >
         {/* Hero Section */}
-        <section className="pt-24 pb-32 px-6 sm:px-8 min-h-screen flex items-center relative">
-          {/* グラデーション境目ぼかし */}
-          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-gray-50 opacity-80"></div>
-          <div className="max-w-7xl mx-auto w-full relative z-30">
-            <div className={`flex flex-col min-h-screen transition-all duration-2000 ease-out ${
-              textAnimationStarted 
-                ? 'justify-center items-start text-left' 
-                : 'justify-center items-center text-center'
-            }`}>
-              <div className={`transition-all duration-2000 ease-out ${
-                textAnimationStarted ? 'transform -translate-x-1/3' : 'transform translate-x-0'
-              }`}>
-                <h1 className={`font-bold leading-tight tracking-tight transition-all duration-500 ${
-                  animationPhase >= 3 
-                    ? 'text-6xl sm:text-7xl lg:text-8xl' 
-                    : 'text-4xl sm:text-5xl lg:text-6xl'
-                } ${isDark ? 'text-white' : 'text-gray-900'}`}>
+        <section className="pt-24 pb-32 px-6 sm:px-8 min-h-screen flex items-center relative" style={{backgroundColor: '#000000', zIndex: 1}}>
+          <div className="max-w-7xl mx-auto w-full relative" style={{zIndex: 10}}>
+            <div className="flex flex-col min-h-screen justify-center items-center text-center">
+              <div className="relative" style={{zIndex: 10}}>
+                <h1 className={`hero-text glass-effect font-bold leading-tight tracking-tight text-6xl sm:text-7xl lg:text-8xl transition-colors duration-500 ${isDark ? 'text-white' : 'text-gray-900'}`}>
                   伝える以上に、<span 
-                    className={`transition-all duration-500 ${
-                      animationPhase >= 3 
-                        ? 'text-7xl sm:text-8xl lg:text-9xl' 
-                        : 'text-5xl sm:text-6xl lg:text-7xl'
-                    }`}
+                    className="hero-text glass-effect text-7xl sm:text-8xl lg:text-9xl"
                     style={{
                       backgroundImage: `linear-gradient(45deg, ${
                         isDark 
@@ -191,16 +189,12 @@ export default function Home() {
                     響かせる。
                   </span>
                 </h1>
-                <p className={`mt-12 text-xl leading-relaxed max-w-2xl transition-all duration-500 font-bold ${
-                  textAnimationStarted ? 'mx-0 text-left' : 'mx-auto text-center'
-                } ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                <p className={`mt-12 text-xl leading-relaxed max-w-2xl mx-auto text-center font-bold transition-all duration-500 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                   サービスやブランドが持つ本当の魅力を最大限に引き出し、
                   <br />
                   伝える以上に"響かせる"仕組みをつくります。
                 </p>
-                <div className={`mt-16 flex transition-all duration-500 ${
-                  textAnimationStarted ? 'justify-start' : 'justify-center'
-                }`}>
+                <div className="mt-16 flex justify-center">
                   <a
                     href="#contact"
                     className={`px-8 py-4 rounded-full transition-all duration-1000 font-bold text-lg relative overflow-hidden ${
@@ -223,7 +217,7 @@ export default function Home() {
         </section>
 
         {/* Knowledge Section */}
-        <section id="knowledge" className="py-20 bg-gray-50 relative">
+        <section id="knowledge" className="py-20 bg-gray-50 relative" style={{backgroundColor: '#f9fafb'}}>
           {/* 上部のぼかし */}
           <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-gray-50 to-transparent"></div>
           <div className="max-w-7xl mx-auto px-6 sm:px-8">
@@ -313,7 +307,7 @@ export default function Home() {
         </section>
 
         {/* Business Section */}
-        <section id="business" className="py-20 bg-white">
+        <section id="business" className="py-20 bg-white" style={{backgroundColor: '#ffffff'}}>
           <div className="max-w-7xl mx-auto px-6 sm:px-8">
             <div className="grid lg:grid-cols-2 gap-16">
               <div>
@@ -416,7 +410,7 @@ export default function Home() {
         </section>
 
         {/* News Section */}
-        <section id="news" className="py-20 bg-white">
+        <section id="news" className="py-20 bg-white" style={{backgroundColor: '#ffffff'}}>
           <div className="max-w-7xl mx-auto px-6 sm:px-8">
             <div className="flex justify-between items-center mb-16">
               <h2 className={`text-4xl font-bold transition-colors duration-1000 ${
@@ -508,9 +502,7 @@ export default function Home() {
         </section>
 
         {/* Footer */}
-        <footer className={`border-t py-12 transition-colors duration-1000 ${
-          isDark ? 'bg-black border-gray-800' : 'bg-white border-gray-100'
-        }`}>
+        <footer className="border-t py-12 bg-white border-gray-100" style={{backgroundColor: '#ffffff'}}>
           <div className="max-w-7xl mx-auto px-6 sm:px-8">
             <div className="text-center">
               <div className={`text-2xl font-bold mb-4 transition-colors duration-1000 ${
@@ -532,6 +524,6 @@ export default function Home() {
           </div>
         </footer>
       </div>
-    </>
+    </div>
   );
 }

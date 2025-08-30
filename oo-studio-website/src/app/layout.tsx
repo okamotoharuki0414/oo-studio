@@ -34,12 +34,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja">
+    <html lang="ja" style={{backgroundColor: '#000000'}}>
       <body
         className={`${inter.variable} ${notoSansJP.variable} antialiased`}
-        style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Noto Sans JP", sans-serif' }}
+        style={{ 
+          fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Noto Sans JP", sans-serif',
+          backgroundColor: '#000000',
+          margin: 0,
+          padding: 0
+        }}
       >
-        {children}
+        <div style={{backgroundColor: '#000000', minHeight: '100vh'}}>
+          {children}
+        </div>
       </body>
     </html>
   );
