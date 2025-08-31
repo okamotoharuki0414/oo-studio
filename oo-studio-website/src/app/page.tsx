@@ -3,6 +3,11 @@
 import { useEffect, useState } from 'react';
 import GlassRings from '../components/GlassRings';
 import CSS3DRings from '../components/CSS3DRings';
+// Simplified Actual Projects Components
+import ActualProjects from '../components/sections/ActualProjects';
+import SimpleContact from '../components/sections/SimpleContact';
+import HeroCarousel from '../components/sections/HeroCarousel';
+import WorksShowcase from '../components/sections/WorksShowcase';
 
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
@@ -18,8 +23,8 @@ export default function Home() {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       setScrollY(currentScrollY);
-      // さらに早い段階で白に切り替え
-      const darkModeHeight = window.innerHeight * 0.5; // ヒーローセクションの50%時点
+      // ActualProjects中盤で白に切り替え（実績フォーカス）
+      const darkModeHeight = window.innerHeight * 1.8; // Hero完了、Projects中盤で切り替え
       const shouldBeDark = currentScrollY < darkModeHeight;
       
       // 一度白になったら戻らない
@@ -62,6 +67,7 @@ export default function Home() {
 
   return (
     <div style={{backgroundColor: '#000000', minHeight: '100vh', position: 'relative'}}>
+      
       {/* 3D Glass Rings - 立体的な丸いリング */}
       <CSS3DRings isVisible={showHeroRings} />
       {/* Backup: React Three Fiber rings */}
@@ -216,313 +222,16 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Knowledge Section */}
-        <section id="knowledge" className="py-20 bg-gray-50 relative" style={{backgroundColor: '#f9fafb'}}>
-          {/* 上部のぼかし */}
-          <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-gray-50 to-transparent"></div>
-          <div className="max-w-7xl mx-auto px-6 sm:px-8">
-            <div className="text-center mb-16">
-              <h2 className={`text-4xl font-bold mb-6 transition-colors duration-1000 ${
-                isDark ? 'text-white' : 'text-gray-900'
-              }`}>
-                Knowledge
-              </h2>
-              <p className={`text-xl max-w-3xl mx-auto transition-colors duration-1000 ${
-                isDark ? 'text-gray-300' : 'text-gray-600'
-              }`}>
-                システム開発とマーケティングに関する最新情報をお届けします
-              </p>
-            </div>
-            
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className={`p-6 rounded-2xl border hover:shadow-lg transition-all duration-300 ${
-                isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
-              }`}>
-                <div className={`text-sm mb-3 transition-colors duration-1000 ${
-                  isDark ? 'text-gray-400' : 'text-gray-500'
-                }`}>
-                  2025.01.15 | Technology
-                </div>
-                <h3 className={`text-lg font-semibold mb-3 transition-colors duration-1000 ${
-                  isDark ? 'text-white' : 'text-gray-900'
-                }`}>
-                  Next.js 15の新機能とパフォーマンス改善
-                </h3>
-                <p className={`text-sm leading-relaxed transition-colors duration-1000 ${
-                  isDark ? 'text-gray-300' : 'text-gray-600'
-                }`}>
-                  最新のNext.js 15で追加された機能とパフォーマンス向上について解説します。
-                </p>
-              </div>
-              
-              <div className={`p-6 rounded-2xl border hover:shadow-lg transition-all duration-300 ${
-                isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
-              }`}>
-                <div className={`text-sm mb-3 transition-colors duration-1000 ${
-                  isDark ? 'text-gray-400' : 'text-gray-500'
-                }`}>
-                  2025.01.10 | Design
-                </div>
-                <h3 className={`text-lg font-semibold mb-3 transition-colors duration-1000 ${
-                  isDark ? 'text-white' : 'text-gray-900'
-                }`}>
-                  モダンなWebデザインのトレンド
-                </h3>
-                <p className={`text-sm leading-relaxed transition-colors duration-1000 ${
-                  isDark ? 'text-gray-300' : 'text-gray-600'
-                }`}>
-                  2025年のWebデザインで注目すべきトレンドとベストプラクティス。
-                </p>
-              </div>
-              
-              <div className={`p-6 rounded-2xl border hover:shadow-lg transition-all duration-300 ${
-                isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
-              }`}>
-                <div className={`text-sm mb-3 transition-colors duration-1000 ${
-                  isDark ? 'text-gray-400' : 'text-gray-500'
-                }`}>
-                  2025.01.05 | Business
-                </div>
-                <h3 className={`text-lg font-semibold mb-3 transition-colors duration-1000 ${
-                  isDark ? 'text-white' : 'text-gray-900'
-                }`}>
-                  DXを成功に導くシステム設計
-                </h3>
-                <p className={`text-sm leading-relaxed transition-colors duration-1000 ${
-                  isDark ? 'text-gray-300' : 'text-gray-600'
-                }`}>
-                  デジタルトランスフォーメーションを成功に導くための設計思想。
-                </p>
-              </div>
-            </div>
-            
-            <div className="text-center mt-12">
-              <a href="#" className={`inline-flex items-center text-lg font-medium transition-colors duration-1000 ${
-                isDark ? 'text-white hover:text-gray-300' : 'text-gray-900 hover:text-gray-700'
-              }`}>
-                すべて見る →
-              </a>
-            </div>
-          </div>
-        </section>
+        {/* 3D Works Showcase */}
+        <WorksShowcase />
+        
+        {/* Actual Projects - 3つの実績のみ */}
+        <ActualProjects />
+        
+        {/* Simple Contact + Footer */}
+        <SimpleContact />
 
-        {/* Business Section */}
-        <section id="business" className="py-20 bg-white" style={{backgroundColor: '#ffffff'}}>
-          <div className="max-w-7xl mx-auto px-6 sm:px-8">
-            <div className="grid lg:grid-cols-2 gap-16">
-              <div>
-                <h2 className={`text-4xl font-bold mb-8 transition-colors duration-1000 ${
-                  isDark ? 'text-white' : 'text-gray-900'
-                }`}>
-                  Solution
-                </h2>
-                <p className={`text-xl leading-relaxed mb-8 transition-colors duration-1000 ${
-                  isDark ? 'text-gray-300' : 'text-gray-600'
-                }`}>
-                  お客様のビジネス課題に対して、最適なテクノロジーソリューションを提供します。
-                  企画から運用まで一貫したサポートで、確実な成果を実現します。
-                </p>
-                <div className="space-y-6">
-                  <div>
-                    <h4 className={`text-lg font-semibold mb-2 transition-colors duration-1000 ${
-                      isDark ? 'text-white' : 'text-gray-900'
-                    }`}>
-                      戦略的システム設計
-                    </h4>
-                    <p className={`transition-colors duration-1000 ${
-                      isDark ? 'text-gray-300' : 'text-gray-600'
-                    }`}>
-                      ビジネス要件を深く理解し、最適なアーキテクチャを設計
-                    </p>
-                  </div>
-                  <div>
-                    <h4 className={`text-lg font-semibold mb-2 transition-colors duration-1000 ${
-                      isDark ? 'text-white' : 'text-gray-900'
-                    }`}>
-                      高品質な開発・実装
-                    </h4>
-                    <p className={`transition-colors duration-1000 ${
-                      isDark ? 'text-gray-300' : 'text-gray-600'
-                    }`}>
-                      最新技術を活用した堅牢で拡張性の高いシステム構築
-                    </p>
-                  </div>
-                </div>
-              </div>
-              
-              <div>
-                <h2 className={`text-4xl font-bold mb-8 transition-colors duration-1000 ${
-                  isDark ? 'text-white' : 'text-gray-900'
-                }`}>
-                  Product
-                </h2>
-                <p className={`text-xl leading-relaxed mb-8 transition-colors duration-1000 ${
-                  isDark ? 'text-gray-300' : 'text-gray-600'
-                }`}>
-                  独自のプロダクト開発を通じて、新しい価値の創造と市場開拓を支援します。
-                  アイデアから製品化まで、トータルでサポートします。
-                </p>
-                <div className="space-y-6">
-                  <div>
-                    <h4 className={`text-lg font-semibold mb-2 transition-colors duration-1000 ${
-                      isDark ? 'text-white' : 'text-gray-900'
-                    }`}>
-                      プロダクト企画・設計
-                    </h4>
-                    <p className={`transition-colors duration-1000 ${
-                      isDark ? 'text-gray-300' : 'text-gray-600'
-                    }`}>
-                      市場分析からUXデザインまで一貫した製品開発
-                    </p>
-                  </div>
-                  <div>
-                    <h4 className={`text-lg font-semibold mb-2 transition-colors duration-1000 ${
-                      isDark ? 'text-white' : 'text-gray-900'
-                    }`}>
-                      継続的な改善・運用
-                    </h4>
-                    <p className={`transition-colors duration-1000 ${
-                      isDark ? 'text-gray-300' : 'text-gray-600'
-                    }`}>
-                      データドリブンな改善とスケーラブルな運用体制
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Vision Section */}
-        <section className="py-32 bg-gray-900 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"></div>
-          <div className="max-w-7xl mx-auto px-6 sm:px-8 relative z-10">
-            <div className="text-center">
-              <h2 className="text-5xl font-bold text-white mb-8">
-                The Evolution Partner
-              </h2>
-              <p className="text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-                テクノロジーの力で、お客様のビジネスを次のステージへ。<br />
-                私たちは単なる開発会社ではなく、共に成長する進化のパートナーです。
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* News Section */}
-        <section id="news" className="py-20 bg-white" style={{backgroundColor: '#ffffff'}}>
-          <div className="max-w-7xl mx-auto px-6 sm:px-8">
-            <div className="flex justify-between items-center mb-16">
-              <h2 className={`text-4xl font-bold transition-colors duration-1000 ${
-                isDark ? 'text-white' : 'text-gray-900'
-              }`}>
-                News
-              </h2>
-              <a href="#" className={`text-lg font-medium transition-colors duration-1000 ${
-                isDark ? 'text-white hover:text-gray-300' : 'text-gray-900 hover:text-gray-700'
-              }`}>
-                Index →
-              </a>
-            </div>
-            
-            <div className="space-y-6">
-              <div className={`flex flex-col md:flex-row md:items-center gap-4 p-6 rounded-xl border transition-all duration-300 hover:shadow-md ${
-                isDark ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'
-              }`}>
-                <div className={`text-sm font-medium transition-colors duration-1000 ${
-                  isDark ? 'text-gray-400' : 'text-gray-500'
-                }`}>
-                  2025.01.20 | 会社情報
-                </div>
-                <div className="flex-1">
-                  <h3 className={`text-lg font-semibold transition-colors duration-1000 ${
-                    isDark ? 'text-white' : 'text-gray-900'
-                  }`}>
-                    新オフィス開設のお知らせ
-                  </h3>
-                </div>
-              </div>
-              
-              <div className={`flex flex-col md:flex-row md:items-center gap-4 p-6 rounded-xl border transition-all duration-300 hover:shadow-md ${
-                isDark ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'
-              }`}>
-                <div className={`text-sm font-medium transition-colors duration-1000 ${
-                  isDark ? 'text-gray-400' : 'text-gray-500'
-                }`}>
-                  2025.01.15 | サービス
-                </div>
-                <div className="flex-1">
-                  <h3 className={`text-lg font-semibold transition-colors duration-1000 ${
-                    isDark ? 'text-white' : 'text-gray-900'
-                  }`}>
-                    AI活用コンサルティングサービスを開始
-                  </h3>
-                </div>
-              </div>
-              
-              <div className={`flex flex-col md:flex-row md:items-center gap-4 p-6 rounded-xl border transition-all duration-300 hover:shadow-md ${
-                isDark ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'
-              }`}>
-                <div className={`text-sm font-medium transition-colors duration-1000 ${
-                  isDark ? 'text-gray-400' : 'text-gray-500'
-                }`}>
-                  2025.01.10 | 実績
-                </div>
-                <div className="flex-1">
-                  <h3 className={`text-lg font-semibold transition-colors duration-1000 ${
-                    isDark ? 'text-white' : 'text-gray-900'
-                  }`}>
-                    大手企業様向けWebアプリケーション開発完了
-                  </h3>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Contact Section */}
-        <section id="contact" className={`py-20 transition-colors duration-1000 ${
-          isDark ? 'bg-gray-900' : 'bg-gray-900'
-        }`}>
-          <div className="max-w-7xl mx-auto px-6 sm:px-8 text-center">
-            <h2 className="text-4xl font-bold text-white mb-6">
-              プロジェクトを始めましょう
-            </h2>
-            <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
-              お客様のアイデアを形にするお手伝いをさせてください。
-              まずはお気軽にご相談ください。
-            </p>
-            <a
-              href="mailto:contact@oostudio.dev"
-              className="bg-white text-gray-900 px-8 py-4 rounded-full hover:bg-gray-100 transition-all duration-300 font-medium text-lg inline-block"
-            >
-              お問い合わせはこちら
-            </a>
-          </div>
-        </section>
-
-        {/* Footer */}
-        <footer className="border-t py-12 bg-white border-gray-100" style={{backgroundColor: '#ffffff'}}>
-          <div className="max-w-7xl mx-auto px-6 sm:px-8">
-            <div className="text-center">
-              <div className={`text-2xl font-bold mb-4 transition-colors duration-1000 ${
-                isDark ? 'text-white' : 'text-gray-900'
-              }`}>
-                OO studio
-              </div>
-              <p className={`mb-8 transition-colors duration-1000 ${
-                isDark ? 'text-gray-300' : 'text-gray-600'
-              }`}>
-                システム開発・コンサルティング
-              </p>
-              <div className={`text-sm transition-colors duration-1000 ${
-                isDark ? 'text-gray-500' : 'text-gray-500'
-              }`}>
-                © 2025 OO studio. All rights reserved.
-              </div>
-            </div>
-          </div>
-        </footer>
+        {/* End of Main Content */}
       </div>
     </div>
   );
