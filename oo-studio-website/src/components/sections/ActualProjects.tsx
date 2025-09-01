@@ -119,43 +119,56 @@ export default function ActualProjects() {
                 
                 {/* Project Visual */}
                 <div className={`relative ${index % 2 === 1 ? 'lg:col-start-2' : ''}`}>
-                  <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 shadow-2xl group-hover:shadow-3xl transition-all duration-500">
-                    <div className="w-full h-full flex flex-col items-center justify-center p-8">
-                      <div className="text-center mb-6">
-                        <div className="w-20 h-20 bg-gray-300 rounded-full mx-auto mb-4 flex items-center justify-center">
-                          <span className="text-3xl text-gray-600">
-                            {project.category === 'Web Development' ? '🌐' : 
-                             project.category === 'Mobile App Development' ? '📱' : '📄'}
-                          </span>
+                  <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl group-hover:shadow-3xl transition-all duration-500">
+                    {project.id === 1 ? (
+                      <img 
+                        src="/images/スクリーンショット 2025-08-30 22.25.11.png" 
+                        alt="okbrand製造業向けサイト" 
+                        className="w-full h-full object-cover"
+                      />
+                    ) : project.id === 2 ? (
+                      <video 
+                        src="/images/画面収録 2025-08-26 21.13.52.mov" 
+                        autoPlay 
+                        loop 
+                        muted 
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex flex-col items-center justify-center p-8">
+                        <div className="text-center mb-6">
+                          <div className="w-20 h-20 bg-gray-300 rounded-full mx-auto mb-4 flex items-center justify-center">
+                            <span className="text-3xl text-gray-600">📄</span>
+                          </div>
+                          <p className="text-gray-600 font-semibold text-lg">{project.category}</p>
                         </div>
-                        <p className="text-gray-600 font-semibold text-lg">{project.category}</p>
+                        
+                        {/* GitHub Stats */}
+                        <div className="grid grid-cols-3 gap-4 text-center">
+                          <div>
+                            <div className="text-lg font-bold text-gray-800">{project.stats.commits}</div>
+                            <div className="text-xs text-gray-500">Commits</div>
+                          </div>
+                          <div>
+                            <div className="text-lg font-bold text-gray-800">{project.stats.files}</div>
+                            <div className="text-xs text-gray-500">Files</div>
+                          </div>
+                          <div>
+                            <div className="text-lg font-bold text-gray-800">{project.stats.languages.length}</div>
+                            <div className="text-xs text-gray-500">Languages</div>
+                          </div>
+                        </div>
+                        
+                        {/* Language indicators */}
+                        <div className="flex flex-wrap gap-1 mt-4 justify-center">
+                          {project.stats.languages.map((lang) => (
+                            <span key={lang} className="px-2 py-1 text-xs bg-gray-400 text-white rounded-full">
+                              {lang}
+                            </span>
+                          ))}
+                        </div>
                       </div>
-                      
-                      {/* GitHub Stats */}
-                      <div className="grid grid-cols-3 gap-4 text-center">
-                        <div>
-                          <div className="text-lg font-bold text-gray-800">{project.stats.commits}</div>
-                          <div className="text-xs text-gray-500">Commits</div>
-                        </div>
-                        <div>
-                          <div className="text-lg font-bold text-gray-800">{project.stats.files}</div>
-                          <div className="text-xs text-gray-500">Files</div>
-                        </div>
-                        <div>
-                          <div className="text-lg font-bold text-gray-800">{project.stats.languages.length}</div>
-                          <div className="text-xs text-gray-500">Languages</div>
-                        </div>
-                      </div>
-                      
-                      {/* Language indicators */}
-                      <div className="flex flex-wrap gap-1 mt-4 justify-center">
-                        {project.stats.languages.map((lang) => (
-                          <span key={lang} className="px-2 py-1 text-xs bg-gray-400 text-white rounded-full">
-                            {lang}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
+                    )}
                   </div>
                   
                   {/* Status Badge */}
@@ -171,28 +184,36 @@ export default function ActualProjects() {
                 </div>
 
                 {/* Project Details */}
-                <div className={`${index % 2 === 1 ? 'lg:col-start-1' : ''} text-white`}>
+                <div className={`${index % 2 === 1 ? 'lg:col-start-1' : ''} ${project.id === 3 ? 'text-gray-900' : 'text-white'}`}>
                   <div className="space-y-6">
                     <div>
-                      <p className="text-sm text-gray-400 uppercase tracking-wide mb-2 font-medium">
+                      <p className={`text-sm uppercase tracking-wide mb-2 font-medium ${
+                        project.id === 3 ? 'text-gray-600' : 'text-gray-400'
+                      }`}>
                         {project.period}
                       </p>
                       <h3 className="text-3xl lg:text-4xl font-bold mb-4 leading-tight">
                         {project.title}
                       </h3>
-                      <p className="text-lg text-gray-300 leading-relaxed">
+                      <p className={`text-lg leading-relaxed ${
+                        project.id === 3 ? 'text-gray-700' : 'text-gray-300'
+                      }`}>
                         {project.description}
                       </p>
                     </div>
 
                     {/* Deliverables */}
                     <div>
-                      <h4 className="text-lg font-semibold mb-4 text-gray-200">主な成果物</h4>
+                      <h4 className={`text-lg font-semibold mb-4 ${
+                        project.id === 3 ? 'text-gray-800' : 'text-gray-200'
+                      }`}>主な成果物</h4>
                       <div className="grid sm:grid-cols-2 gap-3">
                         {project.deliverables.map((item) => (
                           <div key={item} className="flex items-center text-gray-300">
                             <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mr-3 flex-shrink-0"></div>
-                            <span className="text-sm">{item}</span>
+                            <span className={`text-sm ${
+                              project.id === 3 ? 'text-gray-700' : 'text-gray-300'
+                            }`}>{item}</span>
                           </div>
                         ))}
                       </div>
@@ -200,12 +221,18 @@ export default function ActualProjects() {
 
                     {/* Technology Stack */}
                     <div>
-                      <h4 className="text-lg font-semibold mb-4 text-gray-200">技術スタック</h4>
+                      <h4 className={`text-lg font-semibold mb-4 ${
+                        project.id === 3 ? 'text-gray-800' : 'text-gray-200'
+                      }`}>技術スタック</h4>
                       <div className="flex flex-wrap gap-2">
                         {project.technologies.map((tech) => (
                           <span
                             key={tech}
-                            className="px-3 py-1.5 text-sm bg-white/10 rounded-full text-gray-200 border border-white/20 hover:bg-white/20 transition-colors duration-200"
+                            className={`px-3 py-1.5 text-sm rounded-full border transition-colors duration-200 ${
+                              project.id === 3 
+                                ? 'bg-gray-900/10 text-gray-800 border-gray-800/20 hover:bg-gray-900/20' 
+                                : 'bg-white/10 text-gray-200 border-white/20 hover:bg-white/20'
+                            }`}
                           >
                             {tech}
                           </span>
@@ -213,33 +240,6 @@ export default function ActualProjects() {
                       </div>
                     </div>
 
-                    {/* Action Buttons */}
-                    <div className="flex flex-wrap gap-4 pt-4">
-                      <a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm text-white rounded-lg hover:bg-white/20 transition-all duration-200 border border-white/20"
-                      >
-                        <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z" clipRule="evenodd" />
-                        </svg>
-                        View Code
-                      </a>
-                      {project.liveUrl && (
-                        <a
-                          href={project.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200"
-                        >
-                          <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                          </svg>
-                          Live Demo
-                        </a>
-                      )}
-                    </div>
                   </div>
                 </div>
               </div>

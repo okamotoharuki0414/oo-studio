@@ -16,6 +16,10 @@ interface CodePreviewProps {
 export default function CodePreview({ snippets, className = '' }: CodePreviewProps) {
   const [activeSnippet, setActiveSnippet] = useState(0);
 
+  if (!snippets || snippets.length === 0) {
+    return null;
+  }
+
   return (
     <div className={`bg-gray-900 rounded-xl overflow-hidden shadow-2xl ${className}`}>
       {/* Tab Bar */}

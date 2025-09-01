@@ -4,10 +4,7 @@ import { useEffect, useState } from 'react';
 import GlassRings from '../components/GlassRings';
 import CSS3DRings from '../components/CSS3DRings';
 // Simplified Actual Projects Components
-import ActualProjects from '../components/sections/ActualProjects';
 import SimpleContact from '../components/sections/SimpleContact';
-import HeroCarousel from '../components/sections/HeroCarousel';
-import WorksShowcase from '../components/sections/WorksShowcase';
 
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
@@ -17,9 +14,13 @@ export default function Home() {
   const [textAnimationStarted, setTextAnimationStarted] = useState(false);
   const [showNavbar, setShowNavbar] = useState(false);
   const [hasScrolledToWhite, setHasScrolledToWhite] = useState(false);
-  const [showHeroRings, setShowHeroRings] = useState(true);
+  const [showHeroRings, setShowHeroRings] = useState(false);
+  const [windowHeight, setWindowHeight] = useState(0);
 
   useEffect(() => {
+    // Set initial window height
+    setWindowHeight(window.innerHeight);
+    
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       setScrollY(currentScrollY);
@@ -54,7 +55,8 @@ export default function Home() {
     const timer2 = setTimeout(() => setAnimationPhase(2), 2200); // スライドアニメーション開始
     const timer3 = setTimeout(() => setShowLoading(false), 3200); // ロゴスライド開始と同時
     const timer4 = setTimeout(() => setAnimationPhase(3), 3800); // 拡大アニメーション（高速化）
-    const timer5 = setTimeout(() => setTextAnimationStarted(true), 4500); // 左移動アニメーション（早める）
+    const timer5 = setTimeout(() => setTextAnimationStarted(true), 2500); // テキスト出現を早める
+    const timer6 = setTimeout(() => setShowHeroRings(true), 5000); // ロゴアニメーション後にリング表示
 
     return () => {
       clearTimeout(timer1);
@@ -62,6 +64,7 @@ export default function Home() {
       clearTimeout(timer3);
       clearTimeout(timer4);
       clearTimeout(timer5);
+      clearTimeout(timer6);
     };
   }, []);
 
@@ -128,26 +131,19 @@ export default function Home() {
                 OO studio
               </div>
               <div className="flex items-center space-x-6">
-                <a href="#knowledge" className={`px-6 py-2 rounded-full font-bold transition-all duration-[5000ms] ease-in-out ${
+                <a href="/services" className={`px-6 py-2 rounded-full font-bold transition-all duration-[5000ms] ease-in-out ${
                   isDark 
                     ? 'text-gray-300 hover:text-white hover:bg-white/10' 
                     : 'text-gray-600 hover:text-gray-900 hover:bg-gray-900/10'
                 }`}>
-                  Knowledge
+                  Services
                 </a>
-                <a href="#business" className={`px-6 py-2 rounded-full font-bold transition-all duration-[5000ms] ease-in-out ${
+                <a href="/projects" className={`px-6 py-2 rounded-full font-bold transition-all duration-[5000ms] ease-in-out ${
                   isDark 
                     ? 'text-gray-300 hover:text-white hover:bg-white/10' 
                     : 'text-gray-600 hover:text-gray-900 hover:bg-gray-900/10'
                 }`}>
-                  Business
-                </a>
-                <a href="#news" className={`px-6 py-2 rounded-full font-bold transition-all duration-[5000ms] ease-in-out ${
-                  isDark 
-                    ? 'text-gray-300 hover:text-white hover:bg-white/10' 
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-900/10'
-                }`}>
-                  News
+                  Projects
                 </a>
                 <a href="#contact" className={`px-6 py-2 rounded-full transition-all duration-[5000ms] ease-in-out ${
                   isDark 
@@ -176,25 +172,50 @@ export default function Home() {
           <div className="max-w-7xl mx-auto w-full relative" style={{zIndex: 10}}>
             <div className="flex flex-col min-h-screen justify-center items-center text-center">
               <div className="relative" style={{zIndex: 10}}>
-                <h1 className={`hero-text glass-effect font-bold leading-tight tracking-tight text-6xl sm:text-7xl lg:text-8xl transition-colors duration-500 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                  伝える以上に、<span 
-                    className="hero-text glass-effect text-7xl sm:text-8xl lg:text-9xl"
-                    style={{
-                      backgroundImage: `linear-gradient(45deg, ${
-                        isDark 
-                          ? '#ffffff, #60a5fa, #34d399, #8b5cf6, #ffffff' 
-                          : '#1f2937, #3b82f6, #10b981, #8b5cf6, #1f2937'
-                      })`,
-                      backgroundSize: '300% 300%',
-                      WebkitBackgroundClip: 'text',
-                      backgroundClip: 'text',
-                      color: 'transparent',
-                      animation: 'wave-gradient 8s ease-in-out infinite'
-                    }}
-                  >
-                    響かせる。
-                  </span>
-                </h1>
+                <div className="relative cartazero-text-effect" style={{ 
+                  height: '400px', 
+                  overflow: 'hidden',
+                  maskImage: 'linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)',
+                  WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)'
+                }}>
+                  <h1 className={`hero-text glass-effect font-bold leading-tight tracking-tight text-6xl sm:text-7xl lg:text-8xl transition-colors duration-500 absolute inset-0 flex flex-col items-center justify-center ${isDark ? 'text-white' : 'text-gray-900'}`}
+                      style={{
+                        transform: `translateY(${windowHeight > 0 ? scrollY * -0.4 : 0}px)`,
+                        opacity: windowHeight > 0 ? Math.max(0.2, 1 - (scrollY / (windowHeight * 0.7))) : 1,
+                        willChange: 'transform, opacity'
+                      }}>
+                    <div className={`transition-all duration-1200 ease-out ${
+                      textAnimationStarted ? 'translate-y-0 opacity-100' : 'translate-y-24 opacity-0'
+                    }`}
+                         style={{ 
+                           transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
+                           willChange: 'transform, opacity'
+                         }}>
+                      伝える以上に、
+                    </div>
+                    <div 
+                      className={`hero-text glass-effect text-7xl sm:text-8xl lg:text-9xl transition-all duration-1400 ease-out delay-300 ${
+                        textAnimationStarted ? 'translate-y-0 opacity-100' : 'translate-y-28 opacity-0'
+                      }`}
+                      style={{
+                        backgroundImage: `linear-gradient(45deg, ${
+                          isDark 
+                            ? '#ffffff, #60a5fa, #34d399, #8b5cf6, #ffffff' 
+                            : '#1f2937, #3b82f6, #10b981, #8b5cf6, #1f2937'
+                        })`,
+                        backgroundSize: '300% 300%',
+                        WebkitBackgroundClip: 'text',
+                        backgroundClip: 'text',
+                        color: 'transparent',
+                        animation: textAnimationStarted ? 'wave-gradient 8s ease-in-out infinite' : 'none',
+                        transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
+                        willChange: 'transform, opacity'
+                      }}
+                    >
+                      響かせる。
+                    </div>
+                  </h1>
+                </div>
                 <p className={`mt-12 text-xl leading-relaxed max-w-2xl mx-auto text-center font-bold transition-all duration-500 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                   サービスやブランドが持つ本当の魅力を最大限に引き出し、
                   <br />
@@ -222,12 +243,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 3D Works Showcase */}
-        <WorksShowcase />
-        
-        {/* Actual Projects - 3つの実績のみ */}
-        <ActualProjects />
-        
         {/* Simple Contact + Footer */}
         <SimpleContact />
 
